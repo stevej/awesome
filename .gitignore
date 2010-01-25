@@ -1,0 +1,5 @@
+/dist
+/classes
+/out
+*.class
+doc/*.pdf

@@ -1,0 +1,1 @@
+JAVA_OPTS="-Xms16M -Xmx2048M -Djava.awt.headless=true" scala -cp 'lib/*':./classes:./test:'/local/lib/scala/*':'/local/lib/java/*' awesome.cmd.$*

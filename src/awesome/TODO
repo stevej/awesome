@@ -1,0 +1,52 @@
+
+4.8.8
+A class member that does not appear in the source code must be marked
+using a Syn- thetic attribute, or else it must have its ACC_SYNTHETIC
+bit set. The only exceptions to this requirement are for default
+constructors and the class initializa- tion method.
+
+final def scala$collection$mutable$Cloneable$$super$clone(): AnyRef
+
+scala> Class.forName("""scala.collection.MapLike$$anon$2$$anonfun$iterator$2""").getMethod("apply", classOf[Tuple2[_, _]]).toGenericString     
+res0: java.lang.String = <java.lang.NullPointerException>
+
+scala> pcf("scala.util.parsing.combinator.PackratParsers$$anon$3")
+pcf("scala.collection.SeqLike$$anonfun$sliding$1")
+
+public Class<?> getEnclosingClass() {
+    // There are five kinds of classes (or interfaces):
+    // a) Top level classes
+    // b) Nested classes (static member classes)
+    // c) Inner classes (non-static member classes)
+    // d) Local classes (named classes declared within a method)
+    // e) Anonymous classes
+
+
+    // JVM Spec 4.8.6: A class must have an EnclosingMethod
+    // attribute if and only if it is a local class or an
+    // anonymous class.
+    EnclosingMethodInfo enclosingInfo = getEnclosingMethodInfo();
+
+    if (enclosingInfo == null) {
+        // This is a top level or a nested class or an inner class (a, b, or c)
+        return getDeclaringClass();
+    } else {
+        Class<?> enclosingClass = enclosingInfo.getEnclosingClass();
+        // This is a local class or an anonymous class (d or e)
+        if (enclosingClass == this || enclosingClass == null)
+            throw new InternalError("Malformed enclosing method information");
+        else
+            return enclosingClass;
+    }
+}
+
+587   // 'inner' not declared as an inner klass in outer
+588   ResourceMark rm(THREAD);
+589   Exceptions::fthrow(
+590     THREAD_AND_LOCATION,
+591     vmSymbolHandles::java_lang_IncompatibleClassChangeError(),
+592     "%s and %s disagree on InnerClasses attribute",
+593     outer->external_name(),
+594     inner->external_name()
+595   );
+596 }

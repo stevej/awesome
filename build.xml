@@ -1,0 +1,53 @@
+<project name="awesome" default="build">
+  <property file="build.properties"/>
+  <property name="sources" value="src"/>
+  <property name="classes" value="classes"/>
+  <property name="scala-library.jar" value="${scala.home}/lib/scala-library.jar"/>
+  <property name="scala-compiler.jar" value="${scala.home}/lib/scala-compiler.jar"/>
+  <property name="lib" value="lib/"/>
+	<path id="build.classpath">
+	  <pathelement location="${scala-compiler.jar}"/>
+		<pathelement location="${scala-library.jar}"/>
+		<pathelement location="${classes}"/>
+		<path refid="lib.path"/>
+	</path>
+  <path id="lib.path">
+    <fileset dir="${lib}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+  
+	<taskdef resource="scala/tools/ant/antlib.xml">
+		<classpath>
+			<pathelement location="${scala.home}/lib/scala-compiler.jar"/>
+			<pathelement location="${scala-library.jar}"/>
+		</classpath>
+	</taskdef>
+
+  <target name="build" depends="">
+    <mkdir dir="${classes}"/>
+    <scalac srcdir="${sources}" destdir="${classes}"
+			deprecation="on" unchecked="on" encoding="UTF-8" addparams=""
+			classpathref="build.classpath" force="changed"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${classes}" quiet="true"/>
+  </target>
+  
+  <target name="run" depends="build">
+    <java classname="scala.tools.nsc.MainGenericRunner" fork="true" failonerror="true">
+      <classpath refid="build.classpath"/>
+      <!-- <jvmarg value="${run.jvm.model}"/> -->
+      <!-- <jvmarg line="-XX:+InvokeDynamic"/> -->
+      <arg value="awesome.examples.HelloAwesome"/>
+    </java>
+  </target>
+  
+  <!-- <target name="shell" depends="compile">
+    <java classname="scala.tools.nsc.MainGenericRunner" failonerror="true">
+      <classpath refid="build.classpath"/>
+    </java>
+  </target>   -->
+
+</project>
