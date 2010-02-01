@@ -110,5 +110,10 @@ class ParsedClassFile private[jvm] (
   
   lazy val attributeParser = new attr.AttributeParser(this)
   
+  def hasAttribute(attr: String) = attributes exists {
+    case class_attribute_info(index, _) if pool.asString(index) == attr => true
+    case _                                                              => false
+  }
+  
   def process() = ClassFile(pool, classInfo, fields map asFieldInfo, methods map asMethodInfo)
 }

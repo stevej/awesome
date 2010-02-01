@@ -1,5 +1,6 @@
 /dist
 /classes
 /out
+/test
+/doc
 *.class
-doc/*.pdf

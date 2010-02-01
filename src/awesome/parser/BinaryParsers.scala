@@ -86,36 +86,6 @@ trait StandardBinaryParsers extends BinaryParsers with ByteInterpretation with P
   lazy val drain: Parser[Seq[Byte]] = Parser { in =>
     Success(in take in.length, in drop in.length)
   }
-  
-  // /** A tail-recursive version of repN. */
-  // override def repN[T](num: Int, p: => Parser[T]) = 
-  //   if (num == 0) success(Nil) else Parser { in =>
-  //     val elems = new ListBuffer[T]
-  //     
-  //     @tailrec def applyp(in0: Input): ParseResult[List[T]] =
-  //       if (elems.length == num) Success(elems.toList, in0)
-  //       else p(in0) match {
-  //         case Success(x, rest)   => elems += x ; applyp(rest)
-  //         case ns: NoSuccess      => return ns
-  //       }
-  //     
-  //     applyp(in)
-  //   }
-  // 
-  // /** A tail-recursive version of rep1. */
-  // override def rep1[T](first: => Parser[T], p: => Parser[T]) = Parser { in =>
-  //   val elems = new ListBuffer[T]
-  //   
-  //   @tailrec def applyp(in0: Input): ParseResult[List[T]] = p(in0) match {
-  //     case Success(x, rest) => elems += x ; applyp(rest)
-  //     case _                => Success(elems.toList, in0)
-  //   }
-  //   
-  //   first(in) match {
-  //     case Success(x, rest) => elems += x ; applyp(rest)
-  //     case ns: NoSuccess    => ns
-  //   }
-  // }
 
   /** Convenience parsing functions. */
   def parse[T](p: Parser[T], in: Seq[Byte]): ParseResult[T] = parse(p, new ByteReader(in))
