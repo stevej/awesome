@@ -55,17 +55,17 @@ protected[awesome] trait Pimps {
   }
     
   class RichList[A](list: List[A]) {
-    def uniq: List[A] = list.removeDuplicates
+    def uniq: List[A] = list.distinct
 
-    def uniqmap[B](f: A => B): List[B] = (list map f).removeDuplicates
+    def uniqmap[B](f: A => B): List[B] = (list map f).distinct
     def uniqfmap[B](f: A => Traversable[B]): List[B] = (list flatMap f).uniq
     
-    def uniqsortBy[B](f: A => B)(implicit ord: Ordering[B]): List[A] = uniq sortWith (ord on f)
-    def uniqsort(implicit ord: Ordering[A]): List[A] = uniq sortWith ord
+    def uniqsortBy[B](f: A => B)(implicit ord: Ordering[B]): List[A] = uniq sorted (ord on f)
+    def uniqsort(implicit ord: Ordering[A]): List[A] = uniq sorted ord
   }
   
   class RichIterator[+A](it: Iterator[A]) {
-    def uniq: Iterator[A] = it.toList.removeDuplicates.iterator
+    def uniq: Iterator[A] = it.toList.distinct.iterator
     
     def uniqmap[B](f: A => B): Iterator[B] = (it map f).uniq
     def uniqfmap[B](f: A => Iterator[B]): Iterator[B] = (it flatMap f).uniq      

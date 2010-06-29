@@ -20,7 +20,7 @@ object Util {
   /** proxy experiments */
   def walkInterfaces(xs: List[JClass[_]]): List[JClass[_]] = {
     val xs2 = xs flatMap (_.getInterfaces)
-    if ((xs2.toSet -- xs.toSet).nonEmpty) walkInterfaces((xs ++ xs2).removeDuplicates)
+    if ((xs2.toSet -- xs.toSet).nonEmpty) walkInterfaces((xs ++ xs2).distinct)
     else xs
   }
   
@@ -44,8 +44,8 @@ object Util {
     val elems = new Exception().getStackTrace.toList
     elems map (x => StackElement(x.getClassName, x.getFileName, x.getLineNumber, x.getMethodName))
   }
-  def stackFilenames = stackElements map (_.fileName) removeDuplicates
-  def stackClassnames = stackElements map (_.className) removeDuplicates
+  def stackFilenames = stackElements map (_.fileName) distinct
+  def stackClassnames = stackElements map (_.className) distinct
   def stackClazzes = stackClassnames flatMap forNameOpt
   def stackClazzes2 = Stream from 0 map sun.reflect.Reflection.getCallerClass takeWhile (_ != null) toList
 }

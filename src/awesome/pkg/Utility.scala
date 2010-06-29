@@ -63,7 +63,7 @@ protected[awesome] trait Utility {
     def next = { ff ; rest.next.get }
   }
   
-  def uniqueList[T](xss: Traversable[T]*): List[T] = (xss.foldLeft)(List[T]())(_ ++ _).removeDuplicates
+  def uniqueList[T](xss: Traversable[T]*): List[T] = (xss.foldLeft)(List[T]())(_ ++ _).distinct
   
   //
   def allprops = {

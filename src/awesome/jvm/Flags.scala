@@ -28,7 +28,7 @@ object Flags {
   final val allFlags = (
     accessFlags ::: compilerFlags ::: annotationFlags :::
     List(ACC_STATIC, ACC_FINAL, ACC_SYNCHRONIZED, ACC_INTERFACE, ACC_ABSTRACT, ACC_STRICT, ACC_ANNOTATION, ACC_ENUM)
-  ).removeDuplicates
+  ).distinct
   
   /** Some flags are overloaded */
   def name(flag: Int, isMethod: Boolean) = flag match {
@@ -96,9 +96,9 @@ sealed trait Flags {
     List(
       requiredFlags filterNot (this hasFlag _) map requireFailure,
       excludedFlags filter (this hasFlag _) map zeroFailure,
-      flagImpliesFlags partialMap { case (k, v) if hasFlag(k) && !hasFlag(v) => impliesFailure(k, v) },
-      flagExcludesFlags partialMap { case (k, v) if hasFlag(k) && hasFlag(v) => excludesFailure(k, v) },
-      otherConditions partialMap { case (true, msg) => msg }
+      flagImpliesFlags collect { case (k, v) if hasFlag(k) && !hasFlag(v) => impliesFailure(k, v) },
+      flagExcludesFlags collect { case (k, v) if hasFlag(k) && hasFlag(v) => excludesFailure(k, v) },
+      otherConditions collect { case (true, msg) => msg }
     ).flatten
   }
 
@@ -168,7 +168,7 @@ trait MethodFlagNames extends Flags {
   override def scalaName(flag: Int) = flag match {
     case ACC_SYNCHRONIZED => "synchronized"
     case ACC_BRIDGE       => "<bridge>"
-    case ACC_VARARGS      => "<varargs>"
+    case ACC_VARARGS      => "" // "<varargs>"
     case _                => super.scalaName(flag)
   }
 }

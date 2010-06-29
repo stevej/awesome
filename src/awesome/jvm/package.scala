@@ -70,7 +70,7 @@ package object jvm {
       else bs.mkString(" <: ", " with ", "")
     }
 
-    clazz.getTypeParameters.toList map (x => x.getName + boundsStr(x.getBounds))
+    clazz.getTypeParameters.toList map (x => x.getName + boundsStr(x.getBounds filterNot (_ == clazz)))
   }
    
   private def parameterizedString(x: ParameterizedType) = {

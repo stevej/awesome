@@ -60,7 +60,7 @@ object Run {
   //   def descGrouper(x: jvm.MethodInfo) = x.descriptor
   //   val xs = unpickleall.toList flatMap (_.allMethods) groupBy (_.descriptor.toString)
   //   
-  //   val xs2 = xs.toList map { case (k, v) => (k, v map (_.name) removeDuplicates) }
+  //   val xs2 = xs.toList map { case (k, v) => (k, v map (_.name) distinct) }
   //   
   //   xs2 sortWith ((x, y) => x._2.size > y._2.size)
   // }

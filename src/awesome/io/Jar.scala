@@ -36,7 +36,7 @@ class Jar(
   private def classNameFilter: (String =>? String) = {
     case x if x endsWith ".class" => x dropRight 6
   }  
-  def classNames: Iterator[String] = iterator map (_.getName) partialMap classNameFilter
+  def classNames: Iterator[String] = iterator map (_.getName) collect classNameFilter
   
   def parsedClassFiles = classNames flatMap ParsedCache.apply
   def classFiles = classNames flatMap ProcessedCache.apply

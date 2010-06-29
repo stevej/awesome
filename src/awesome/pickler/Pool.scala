@@ -3,6 +3,7 @@ package pickler
 
 import Constants._
 import parser.ByteReader
+import scala.reflect.NameTransformer
 
 trait PoolwideMethods {
   self: Pool =>
@@ -13,7 +14,7 @@ trait PoolwideMethods {
     private val entryArray = entries.toArray
     private val names = new Array[String](entryArray.size)
     private val indices = 0 until entryArray.size
-    private def entriesWhere(pf: Entry =>? Entry): List[Entry] = entries partialMap pf
+    private def entriesWhere(pf: Entry =>? Entry): List[Entry] = entries collect pf
     
     def isComplete(index: Int) = names(index) != null
     def isAllComplete = names forall (_ != null)
@@ -136,7 +137,7 @@ class Pool() extends PoolwideMethods {
     // def refidx = refs map (_.index)
     def refs: List[Int]
     
-    override def toString = util.NameTransformer.decode(toName)
+    override def toString = NameTransformer.decode(toName)
   }
   
   trait Owned extends Entry {

@@ -67,7 +67,7 @@ class Jars(
   def grep(p: Jar => Boolean): Jars = copy(filter = ((x: Jar) => jarFilter(x) && p(x)))
 
   def ++(other: Jars): Jars =
-    new Jars((allJars ++ other.allJars).removeDuplicates, (x: Jar) => jarFilter(x) && other.jarFilter(x))
+    new Jars((allJars ++ other.allJars).distinct, (x: Jar) => jarFilter(x) && other.jarFilter(x))
   
   def >>[T](p: JarEntry => Iterator[T]): Iterator[T]  = entries flatMap p  
   def |[T](f: JarEntry => T): Iterator[T]             = entries map f

@@ -2,9 +2,9 @@ package awesome
 package parser
 
 import scala.util.parsing.input.Reader
-import scala.util.control.ControlException
+import scala.util.control.ControlThrowable
 
-object ParserEOFException extends ControlException
+object ParserEOFException extends ControlThrowable
 
 class ByteReader(val bytes: Array[Byte], override val offset: Int) extends Reader[Byte] {
   def this(reader: Reader[_]) = this(reader.source.toString.getBytes, 0)

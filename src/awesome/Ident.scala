@@ -1,6 +1,6 @@
 package awesome
 
-import scala.util.NameTransformer
+import scala.reflect.NameTransformer
 import types.Base
 
 sealed trait Ident {

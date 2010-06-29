@@ -15,9 +15,9 @@ case class ClassFile private[jvm] (
   def allClasses = attributes flatMap { case InnerClasses(xs) => xs ; case _ => Nil }
   def allMembers: List[Member] = thisClass :: allFields ::: allMethods ::: allClasses
   
-  def methods = allMethods filter methodFilter sortWith methodSorter
-  def fields = allFields filter fieldFilter sortWith anySorter[FieldInfo]()
-  def classes = allClasses filter (_.innerClass.isDefined) sortWith anySorter[InnerClass]()
+  def methods = allMethods filter methodFilter sorted
+  def fields = allFields filter fieldFilter sortBy (_.toString)
+  def classes = allClasses filter (_.innerClass.isDefined) sortBy (_.toString)
   def members = methods ::: fields ::: classes
   
   def referencedClasses = pool.referencedClasses
@@ -41,7 +41,7 @@ case class ClassFile private[jvm] (
   def enclosingMethod = thisClass.enclosingMethod
 
   private def methodFilter: MethodInfo => Boolean = _.shouldPrint
-  private def methodSorter: Ordering[MethodInfo] = Ordering fromLessThan { (x: MethodInfo, y: MethodInfo) =>
+  private implicit def methodSorter: Ordering[MethodInfo] = Ordering fromLessThan { (x: MethodInfo, y: MethodInfo) =>
     (x.isConstructor && !y.isConstructor) ||  
     (x.isPrivate && !y.isPrivate) ||
     (x.isPackagePrivate && !y.isPackagePrivate) ||

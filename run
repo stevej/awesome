@@ -1,4 +1,4 @@
 JAVA_OPTS="-Xms16M -Xmx2048M -Djava.awt.headless=true" \
-  /scala/trunk/build/pack/bin/scala -cp \
+  /scala/inst/rc/bin/scala -cp \
   'lib/*':./classes:./test:'/local/lib/scala/*':'/local/lib/java/*' \
   -i cmd.scala

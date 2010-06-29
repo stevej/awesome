@@ -84,7 +84,7 @@ object ReadInnerClasses {
     (for (inner <- containing) yield {
       containedBy.get(inner) match {
         case Some(containers) =>
-          val names = (containers map (_.outer)).removeDuplicates
+          val names = (containers map (_.outer)).distinct
           assert(names.size == 1)
           val name = names.head
           
@@ -103,7 +103,7 @@ object ReadInnerClasses {
   
   def checkContainedBy = for ((k, values) <- containedBy) yield {
     val outers = values map (_.outer)
-    val unique = outers.removeDuplicates
+    val unique = outers.distinct
 
     if (unique.size == 1)
       "%s is contained by %s (%d classes agree)".format(k, unique.head, outers.size)
@@ -118,7 +118,7 @@ object ReadInnerClasses {
   def checkContainsThese: List[String] = containsThese.toList map { 
     case (k, values) =>
       val inners = values map (_.fqname)
-      val xs = inners.removeDuplicates sortWith (_ < _)
+      val xs = inners.distinct sortWith (_ < _)
   
       corresponds(k, xs)
   } flatten

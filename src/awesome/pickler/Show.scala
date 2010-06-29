@@ -1,7 +1,7 @@
 package awesome
 package pickler
 
-import scala.tools.nsc.symtab.classfile.PickleBuffer
+import scala.reflect.generic.PickleBuffer
 import scala.tools.nsc.util.ShowPickled
 import jvm.ClassFileParser
 

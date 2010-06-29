@@ -60,7 +60,11 @@ case class MethodInfo(
   //   else descriptor.argTypes map (_.toString)
   // }
   def paramTypes    = reflectArgumentTypes match {
-    case Some(xs)   => xs map javaTypeToString
+    case Some(xs)   =>
+      varArgType match {
+        case Some(t)  => (xs.init map javaTypeToString) :+ (javaTypeToString(t) + "*")
+        case _        => xs map javaTypeToString
+      }
     case _          => descriptor.argTypes map (_.toString)
     // case _          => asmArgumentTypes(descriptor.text) map asmTypeToString
   }

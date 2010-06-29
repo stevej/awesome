@@ -8,6 +8,7 @@ class JavaMethod(val method: reflect.Method) {
   def isVarArgs = method.isVarArgs
   def varArgType = argumentTypes.last match {
     case x: GenericArrayType if isVarArgs => Some(x.getGenericComponentType)
+    case x: JClass[_] if x.isArray        => Some(x.getComponentType)
     case _                                => None
   }
   

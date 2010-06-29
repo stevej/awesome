@@ -8,7 +8,7 @@ import parser._
 import ClassFileParser._
 
 case class ParsedPool(pool: constant_pool) {
-  def referencedClasses = pool.infos partialMap { case cp_class(x)  => asString(x) }
+  def referencedClasses = pool.infos collect { case cp_class(x)  => asString(x) }
   def referencedPackages = referencedClasses uniqmap (_.toPackage)
 
   def formatError(index: Int) =
