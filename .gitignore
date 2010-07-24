@@ -6,3 +6,7 @@
 /local
 /asm
 *.class
+target
+project/boot
+src_managed
+lib_managed
